@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -18,12 +19,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyQuizzAppTheme {
                     val navController = rememberNavController()
+                    val quizViewModel: QuizViewModel = viewModel()
                     NavHost(navController = navController, startDestination = "Home") {
                         composable("Home") {
-                            Home(navController)
+                            Home(navController, quizViewModel)
                         }
                         composable("Quiz_Page") {
-                            QuizPage()
+                            QuizPage(navController, quizViewModel)
                         }
 
                     }

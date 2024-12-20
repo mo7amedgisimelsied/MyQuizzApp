@@ -16,23 +16,28 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavHostController
 
 @Composable
-fun QuizPage(){
+fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel) {
 
                     Column (modifier = Modifier.fillMaxSize().padding(16.dp)) {
                     var index by remember { mutableStateOf(0) }
                     var userAnswer by remember { mutableStateOf(0) }
-                    var result by remember { mutableStateOf("") }
+                    var score by remember { mutableStateOf(0) }
                     var explain by remember { mutableStateOf("") }
 
-                    Text(text = "Course Title", fontWeight = FontWeight.Bold)
+                        val questions by quizViewModel.questionsList.observeAsState(emptyList())
+
+
+                        Text(text = "Course Title", fontWeight = FontWeight.Bold)
                     Text(text = "Question ${index + 1}")
                     Text(text = questions[index].questionText)
 
@@ -44,7 +49,7 @@ fun QuizPage(){
                     Button(onClick = {userAnswer = 3}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[3]) }
 
                     // check button
-                    Button(onClick = {if (userAnswer == questions[index].correctAnswer) {result = "Correct!"} else {result = "Wrong!" ; explain = questions[index].explanation}}) { Text(text = "check") }
+                    Button(onClick = {if (userAnswer == questions[index].correctAnswer) {score++} else { explain = questions[index].explanation}}) { Text(text = "check") }
 
                     // navigation buttons
                     Row {
@@ -52,12 +57,12 @@ fun QuizPage(){
                         Button(onClick = {if (index < questions.size - 1){ index++ } else {index = 0} }, modifier = Modifier.fillMaxWidth().weight(1f)) { Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null) }
                     }
 
-                    Text(text = result)
+                    Text(text = "Your Score: $score")
                     Text(text = explain)
 
                     Row {
                         for (i in 0 until questions.size) {
-                            Text(text = i.toString(), modifier = if (i == index) {Modifier.background(Color.Gray).width(30.dp)} else {Modifier.width(30.dp)})
+                            Text(text = "${i + 1}", modifier = if (i == index) {Modifier.background(Color.Gray).width(30.dp)} else {Modifier.width(30.dp)})
 
                         }
                     }
@@ -65,27 +70,3 @@ fun QuizPage(){
 
                 }
 }
-
-// mock data:
-data class Question(
-    val questionText: String,
-    val options: List<String>,
-    val correctAnswer: Int,
-    val explanation: String
-)
-
-val questions = listOf(
-    Question(
-        questionText = "question text 1",
-        options = listOf("a", "b", "c", "d"),
-        correctAnswer = 0,
-        explanation = "explanation"
-    ),
-
-    Question(
-        questionText = "question text 2",
-        options = listOf("a", "b", "c", "d"),
-        correctAnswer = 1,
-        explanation = "explanation"
-    )
-)
