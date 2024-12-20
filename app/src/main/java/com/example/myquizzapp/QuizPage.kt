@@ -54,7 +54,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel) {
                     // navigation buttons
                     Row {
                         Button(onClick = {if (index > 0){ index-- }}, modifier = Modifier.fillMaxWidth().weight(1f)) { Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null) }
-                        Button(onClick = {if (index < questions.size - 1){ index++ } else {index = 0} }, modifier = Modifier.fillMaxWidth().weight(1f)) { Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null) }
+                        Button(onClick = {if (index < questions.size - 1){ index++ } else {navController.navigate("Score_Page")} }, modifier = Modifier.fillMaxWidth().weight(1f)) { Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null) }
                     }
 
                     Text(text = "Your Score: $score")

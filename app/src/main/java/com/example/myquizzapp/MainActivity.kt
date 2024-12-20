@@ -27,6 +27,9 @@ class MainActivity : ComponentActivity() {
                         composable("Quiz_Page") {
                             QuizPage(navController, quizViewModel)
                         }
+                        composable("Score_Page") {
+                            ScorePage(navController)
+                        }
 
                     }
 
