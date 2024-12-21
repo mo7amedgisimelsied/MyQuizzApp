@@ -43,20 +43,30 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel) {
                     Text(text = "Question ${index + 1}")
                     Text(text = questions[index].questionText)
 
+                        fun checkAnswer(userAnswer: Int) {
+                            if (userAnswer == questions[index].correctAnswer) {
+                                score++
+                            } else {
+                                explain = questions[index].explanation
+                            }
+                        }
 
                     // answer buttons
-                    Button(onClick = {userAnswer = 0}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[0]) }
-                    Button(onClick = {userAnswer = 1}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[1]) }
-                    Button(onClick = {userAnswer = 2}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[2]) }
-                    Button(onClick = {userAnswer = 3}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[3]) }
+                    Button(onClick = {checkAnswer(0)}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[0]) }
+                    Button(onClick = {checkAnswer(1)}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[1]) }
+                    Button(onClick = {checkAnswer(2)}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[2]) }
+                    Button(onClick = {checkAnswer(3)}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[3]) }
 
                     // check button
-                    Button(onClick = {if (userAnswer == questions[index].correctAnswer) {score++} else { explain = questions[index].explanation}}) { Text(text = "check") }
+//                    Button(onClick = {if (userAnswer == questions[index].correctAnswer) {score++} else { explain = questions[index].explanation}}) { Text(text = "check") }
+
+
+
 
                     // navigation buttons
                     Row {
                         Button(onClick = {if (index > 0){ index-- }}, modifier = Modifier.fillMaxWidth().weight(1f)) { Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null) }
-                        Button(onClick = {if (index < questions.size - 1){ index++ } else {navController.navigate("Score_Page")} }, modifier = Modifier.fillMaxWidth().weight(1f)) { Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null) }
+                        Button(onClick = {if (index < questions.size - 1){ index++ } else {navController.navigate("Score_Page/$score")} }, modifier = Modifier.fillMaxWidth().weight(1f)) { Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null) }
                     }
 
                     Text(text = "Your Score: $score")
@@ -68,8 +78,6 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel) {
 
                         }
                     }
-                    Button(onClick = {navController.navigate("Score_Page/$score")}) {
-                        Text(text = "Score Page")
-                    }
+
                 }
 }
