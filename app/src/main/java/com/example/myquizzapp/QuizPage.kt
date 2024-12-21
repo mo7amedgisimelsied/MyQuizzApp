@@ -34,6 +34,8 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel) {
                     var score by remember { mutableStateOf(0) }
                     var explain by remember { mutableStateOf("") }
 
+
+
                         val questions by quizViewModel.questionsList.observeAsState(emptyList())
 
 
@@ -66,7 +68,8 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel) {
 
                         }
                     }
-
-
+                    Button(onClick = {navController.navigate("Score_Page/$score")}) {
+                        Text(text = "Score Page")
+                    }
                 }
 }

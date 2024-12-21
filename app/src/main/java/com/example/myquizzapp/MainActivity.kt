@@ -18,17 +18,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyQuizzAppTheme {
+
                     val navController = rememberNavController()
                     val quizViewModel: QuizViewModel = viewModel()
+
                     NavHost(navController = navController, startDestination = "Home") {
                         composable("Home") {
                             Home(navController, quizViewModel)
                         }
                         composable("Quiz_Page") {
-                            QuizPage(navController, quizViewModel)
+                            QuizPage(navController = navController, quizViewModel = quizViewModel)
                         }
-                        composable("Score_Page") {
-                            ScorePage(navController)
+                        composable("Score_Page/{currentScore}") { backStackEntry ->
+                            val currentScore = backStackEntry.arguments?.getString("currentScore")?.toIntOrNull() ?: 0
+                            ScorePage(navController = navController, context = applicationContext, currentScore = currentScore)
                         }
 
                     }

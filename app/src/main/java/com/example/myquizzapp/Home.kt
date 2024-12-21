@@ -44,7 +44,7 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel) {
                     fontWeight = FontWeight.Bold,
                     text = "JetPack Compose Quiz")
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Highest Score: $50")
+                Text(text = "Highest Score: ${getHighScore(navController.context)}")
             }
             Button(onClick = {
                 quizViewModel.setQuestions(questions)
@@ -69,7 +69,7 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel) {
                     fontWeight = FontWeight.Bold,
                     text = "React Native Quiz")
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Highest Score: $50")
+                Text(text = "Highest Score: ${getHighScore(navController.context)}")
             }
             Button(onClick = {
                 quizViewModel.setQuestions(questions2)
