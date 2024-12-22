@@ -1,5 +1,6 @@
 package com.example.myquizzapp
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,14 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 
 @Composable
-fun Home(navController: NavHostController, quizViewModel: QuizViewModel) {
+fun Home(navController: NavHostController, quizViewModel: QuizViewModel, context: Context) {
+
+
+    var highScore1 = getHighScore(context, quizes[0].id)
+    var highScore2 = getHighScore(context, quizes[1].id)
 
 
     Column(
@@ -42,13 +46,13 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel) {
             Column {
                 Text(fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    text = "JetPack Compose Quiz")
+                    text = quizes[0].name)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Highest Score: ${getHighScore(navController.context)}")
+                Text(text = "Highest Score: $highScore1")
             }
             Button(onClick = {
                 quizViewModel.setQuestions(questions)
-                navController.navigate("Quiz_Page")
+                navController.navigate("Quiz_Page/${quizes[0].id}/${quizes[0].name}")
             }) {
                 Text(text = "Start Quiz")
             }
@@ -67,13 +71,13 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel) {
             Column {
                 Text(fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    text = "React Native Quiz")
+                    text = quizes[1].name)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Highest Score: ${getHighScore(navController.context)}")
+                Text(text = "Highest Score: $highScore2")
             }
             Button(onClick = {
                 quizViewModel.setQuestions(questions2)
-                navController.navigate("Quiz_Page")
+                navController.navigate("Quiz_Page/${quizes[1].id}/${quizes[1].name}")
             }) {
                 Text(text = "Start Quiz")
             }
@@ -85,11 +89,16 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel) {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun HomePreview() {
+data class Quiz(
+    val id: String,
+    val name: String
+)
 
-    }
+val quizes = listOf(
+    Quiz(id = "1", name = "JetPack Compose Quiz"),
+    Quiz(id = "2", name = "React Native Quiz")
+)
+
 
 
 val questions: List<Question> = listOf(

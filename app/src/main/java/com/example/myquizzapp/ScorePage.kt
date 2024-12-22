@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -25,34 +26,43 @@ import kotlinx.coroutines.runBlocking
 
 
 val Context.dataStore by preferencesDataStore(name = "quiz_preferences")
-val HIGH_SCORE_KEY = intPreferencesKey("high_score")
 
+object PreferencesKeys {
+    fun highScoreKey(quizId: String): Preferences.Key<Int> {
+        return intPreferencesKey("high_score_$quizId")
+    }
+}
 
-fun saveHighScore(context: Context, score: Int) {
+fun saveHighScore(context: Context, quizId: String, score: Int) {
     runBlocking {
         context.dataStore.edit { preferences ->
-            val currentHighScore = preferences[HIGH_SCORE_KEY] ?: 0
+            val highScoreKey = PreferencesKeys.highScoreKey(quizId)
+            val currentHighScore = preferences[highScoreKey] ?: 0
             if (score > currentHighScore) {
-                preferences[HIGH_SCORE_KEY] = score
+                preferences[highScoreKey] = score
             }
         }
     }
 }
 
 
-fun getHighScore(context: Context): Int {
+fun getHighScore(context: Context, quizId: String): Int {
     return runBlocking {
-        context.dataStore.data.first()[HIGH_SCORE_KEY] ?: 0
+        val highScoreKey = PreferencesKeys.highScoreKey(quizId)
+        context.dataStore.data.first()[highScoreKey] ?: 0
     }
 }
 
 
 
 @Composable
-fun ScorePage(context: Context, currentScore: Int, navController: NavHostController) {
-    var highScore by remember { mutableStateOf(getHighScore(context)) }
-    saveHighScore(context, currentScore)
-    highScore = getHighScore(context)
+fun ScorePage(context: Context, currentScore: Int, navController: NavHostController, quizId: String) {
+    var highScore by remember { mutableStateOf(getHighScore(context, quizId)) }
+
+    if (currentScore > highScore) {
+        saveHighScore(context = context, quizId = quizId, score = currentScore)
+        highScore = currentScore
+    }
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,

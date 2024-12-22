@@ -22,16 +22,22 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val quizViewModel: QuizViewModel = viewModel()
 
+
+
                     NavHost(navController = navController, startDestination = "Home") {
                         composable("Home") {
-                            Home(navController, quizViewModel)
+                            Home(navController, quizViewModel, applicationContext)
                         }
-                        composable("Quiz_Page") {
-                            QuizPage(navController = navController, quizViewModel = quizViewModel)
+                        composable("Quiz_Page/{quizId}/{quizName}") {
+                                backStackEntry ->
+                            val quizId = backStackEntry.arguments?.getString("quizId") ?: ""
+                            val quizName = backStackEntry.arguments?.getString("quizName") ?: ""
+                            QuizPage(navController = navController, quizViewModel = quizViewModel, Quiz(quizId, quizName))
                         }
-                        composable("Score_Page/{currentScore}") { backStackEntry ->
+                        composable("Score_Page/{quizId}/{currentScore}") { backStackEntry ->
+                            val quizId = backStackEntry.arguments?.getString("quizId") ?: ""
                             val currentScore = backStackEntry.arguments?.getString("currentScore")?.toIntOrNull() ?: 0
-                            ScorePage(navController = navController, context = applicationContext, currentScore = currentScore)
+                            ScorePage(navController = navController, context = applicationContext, currentScore = currentScore, quizId = quizId)
                         }
 
                     }

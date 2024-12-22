@@ -26,11 +26,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 
 @Composable
-fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel) {
+fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, quiz: Quiz) {
 
                     Column (modifier = Modifier.fillMaxSize().padding(16.dp)) {
                     var index by remember { mutableStateOf(0) }
-                    var userAnswer by remember { mutableStateOf(0) }
                     var score by remember { mutableStateOf(0) }
                     var explain by remember { mutableStateOf("") }
 
@@ -50,15 +49,12 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel) {
                                 explain = questions[index].explanation
                             }
                         }
-
                     // answer buttons
                     Button(onClick = {checkAnswer(0)}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[0]) }
                     Button(onClick = {checkAnswer(1)}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[1]) }
                     Button(onClick = {checkAnswer(2)}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[2]) }
                     Button(onClick = {checkAnswer(3)}, modifier = Modifier.fillMaxWidth()) { Text(text = questions[index].options[3]) }
 
-                    // check button
-//                    Button(onClick = {if (userAnswer == questions[index].correctAnswer) {score++} else { explain = questions[index].explanation}}) { Text(text = "check") }
 
 
 
@@ -66,7 +62,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel) {
                     // navigation buttons
                     Row {
                         Button(onClick = {if (index > 0){ index-- }}, modifier = Modifier.fillMaxWidth().weight(1f)) { Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null) }
-                        Button(onClick = {if (index < questions.size - 1){ index++ } else {navController.navigate("Score_Page/$score")} }, modifier = Modifier.fillMaxWidth().weight(1f)) { Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null) }
+                        Button(onClick = {if (index < questions.size - 1){ index++ } else {navController.navigate("Score_Page/${quiz.id}/$score")} }, modifier = Modifier.fillMaxWidth().weight(1f)) { Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null) }
                     }
 
                     Text(text = "Your Score: $score")
