@@ -1,11 +1,15 @@
 package com.example.myquizzapp
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
@@ -67,18 +72,28 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize().padding(20.dp)
+
+        modifier = Modifier.fillMaxSize().background(Color(0xFF000814)).padding(20.dp)
 
     ){
         Text(
+            color = Color.White,
             fontSize = 30.sp,
             text = "Your Score: $currentScore"
         )
-        Text(text = "High Score: $highScore")
+        Text(
+            color = Color.White,
+            text = "High Score: $highScore")
+        Spacer(Modifier.padding(10.dp))
         Button(onClick = {
             navController.navigate("Home")
-        }) {
-            Text(text = "Back to Home")
+        },
+            colors = ButtonDefaults.buttonColors(Color(0xFF7b2cbf)),
+            shape = RoundedCornerShape(10.dp)
+        ) {
+            Text(
+                color = Color.White,
+                text = "Back to Home")
         }
     }
 
