@@ -43,14 +43,16 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
     val questions by quizViewModel.questionsList.observeAsState(emptyList())
     var showExplanation by remember { mutableStateOf(false) }
     val buttonColors = remember { mutableStateListOf(Color.White, Color.White, Color.White, Color.White)}
+    var answered = remember { mutableStateListOf(*Array(questions.size) { false }) }
+
 
 
     fun checkAnswer(userAnswer: Int) {
         buttonColors.fill(Color.White)
         if (userAnswer == questions[index].correctAnswer) {
-            score++
             buttonColors[userAnswer] = Color(0xFF00C853)
             showExplanation = false
+            if(!answered[userAnswer]){score++; answered[userAnswer] = true}
         } else {
             explain = questions[index].explanation
             showExplanation = true
