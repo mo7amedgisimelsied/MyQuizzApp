@@ -11,11 +11,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -42,21 +43,26 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
     var explain by remember { mutableStateOf("") }
     val questions by quizViewModel.questionsList.observeAsState(emptyList())
     var showExplanation by remember { mutableStateOf(false) }
-    val buttonColors = remember { mutableStateListOf(Color.White, Color.White, Color.White, Color.White)}
-    var answered = remember { mutableStateListOf(*Array(questions.size) { false }) }
+    val optionsColors = remember { mutableStateListOf(Color.White, Color.White, Color.White, Color.White)}
+    var isAnsweredCorreclty = remember { mutableStateListOf(*Array(questions.size) { false }) }
 
 
 
     fun checkAnswer(userAnswer: Int) {
-        buttonColors.fill(Color.White)
+        optionsColors.fill(Color.White)
         if (userAnswer == questions[index].correctAnswer) {
-            buttonColors[userAnswer] = Color(0xFF00C853)
+            optionsColors[userAnswer] = Color(0xFF00C853)
             showExplanation = false
-            if(!answered[userAnswer]){score++; answered[userAnswer] = true}
+            if(!isAnsweredCorreclty[index])
+            {
+                score++
+                isAnsweredCorreclty[index] = true
+            }
+
         } else {
             explain = questions[index].explanation
             showExplanation = true
-            buttonColors[userAnswer] = Color(0xFFD32F2F)
+            optionsColors[userAnswer] = Color(0xFFD32F2F)
         }
     }
 
@@ -77,7 +83,8 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
                                 color = Color.White
                             )
 
-                            Spacer(Modifier.padding(10.dp))
+                            Spacer(Modifier.padding(7.dp))
+
                             Text(
                                 textAlign = TextAlign.Center,
                                 fontSize = 20.sp,
@@ -87,63 +94,25 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
                         }
 
 
-
-                    // answer buttons
-
                         Column (horizontalAlignment = Alignment.CenterHorizontally){
-                            Button(
-                                onClick = { checkAnswer(0) },
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(buttonColors[0]),
-                                shape = RoundedCornerShape(10.dp)
-                            ) {
-                                Text(
-                                    color = Color.DarkGray,
-                                    textAlign = TextAlign.Center,
-                                    text = questions[index].options[0]
-                                )
+                            for (i in 0..3) {
+                                Button(
+                                    onClick = { checkAnswer(i) },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = ButtonDefaults.buttonColors(optionsColors[i]),
+                                    shape = RoundedCornerShape(10.dp)
+                                ) {
+                                    Text(
+                                        color = Color.DarkGray,
+                                        textAlign = TextAlign.Center,
+                                        text = questions[index].options[i]
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(2.dp))
                             }
 
-                            Button(
-                                onClick = { checkAnswer(1) },
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(buttonColors[1]),
-                                shape = RoundedCornerShape(10.dp)
-                            ) {
-                                Text(
-                                    color = Color.DarkGray,
-                                    textAlign = TextAlign.Center,
-                                    text = questions[index].options[1]
-                                )
-                            }
+                            Spacer(Modifier.padding(3.dp))
 
-                            Button(
-                                onClick = { checkAnswer(2) },
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(buttonColors[2]),
-                                shape = RoundedCornerShape(10.dp)
-                            ) {
-                                Text(
-                                    color = Color.DarkGray,
-                                    textAlign = TextAlign.Center,
-                                    text = questions[index].options[2]
-                                )
-                            }
-
-                            Button(
-                                onClick = { checkAnswer(3) },
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(buttonColors[3]),
-                                shape = RoundedCornerShape(10.dp)
-                            ) {
-                                Text(
-                                    color = Color.DarkGray,
-                                    textAlign = TextAlign.Center,
-                                    text = questions[index].options[3]
-                                )
-                            }
-                            Spacer(Modifier.padding(5.dp))
-                            // navigation buttons
                             Row (
                                 Modifier.fillMaxWidth(0.8f),
                                 ){
@@ -151,38 +120,48 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
                                     onClick = {
                                         if (index > 0) {
                                             index--
-                                            buttonColors.fill(Color.White)
+                                            optionsColors.fill(Color.White)
                                         }
                                     },
-                                    modifier = Modifier.fillMaxWidth().weight(1f).border(2.dp, Color.White, shape = RoundedCornerShape(50.dp)),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f)
+                                        .border(2.dp, Color.White, shape = RoundedCornerShape(50.dp)),
                                     colors = ButtonDefaults.buttonColors(Color.Transparent),
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Default.ArrowBack,
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                         contentDescription = null,
                                         tint = Color.White
                                     )
                                 }
+
                                 Spacer(Modifier.weight(2f))
+
                                 Button(
                                     onClick = {
                                         if (index < questions.size - 1) {
                                             index++; showExplanation = false
-                                            buttonColors.fill(Color.White)
+                                            optionsColors.fill(Color.White)
                                         } else {
                                             navController.navigate("Score_Page/${quiz.id}/$score")
                                         }
                                     },
-                                    modifier = Modifier.fillMaxWidth().weight(1f).border(2.dp, Color.White, shape = RoundedCornerShape(50.dp)),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f)
+                                        .border(2.dp, Color.White, shape = RoundedCornerShape(50.dp)),
                                     colors = ButtonDefaults.buttonColors(Color.Transparent),
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Default.ArrowForward,
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                                         contentDescription = null,
                                         tint = Color.White
                                     )
                                 }
                             }
+
+                            Spacer(Modifier.padding(5.dp))
 
                             if (showExplanation) {
                                 Text(
@@ -197,23 +176,20 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
 
 
 
+                    Column (horizontalAlignment = Alignment.CenterHorizontally){
+                        Text(
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            text = "Your Score: $score"
+                        )
+
+                        Text(
+                            text = "Question ${index + 1} of ${questions.size}",
+                            color = Color.White
+                        )
+                    }
 
 
-
-Column (horizontalAlignment = Alignment.CenterHorizontally){
-    Text(
-        fontWeight = FontWeight.Bold,
-        color = Color.White,
-        text = "Your Score: $score"
-    )
-
-
-
-    Text(
-        text = "Question ${index + 1} of ${questions.size}",
-        color = Color.White
-    )
-}
 
                 }
 }

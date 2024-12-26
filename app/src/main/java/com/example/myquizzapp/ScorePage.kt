@@ -72,8 +72,10 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-
-        modifier = Modifier.fillMaxSize().background(Color(0xFF000814)).padding(20.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF000814))
+            .padding(20.dp)
 
     ){
         Text(
@@ -81,10 +83,13 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
             fontSize = 30.sp,
             text = "Your Score: $currentScore"
         )
+
         Text(
             color = Color.White,
             text = "High Score: $highScore")
+
         Spacer(Modifier.padding(10.dp))
+
         Button(onClick = {
             navController.navigate("Home")
         },
@@ -94,7 +99,10 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
             Text(
                 color = Color.White,
                 text = "Back to Home")
+
         }
+
+
     }
 
 
