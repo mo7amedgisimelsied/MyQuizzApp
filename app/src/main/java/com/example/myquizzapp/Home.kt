@@ -29,26 +29,29 @@ import androidx.navigation.NavHostController
 @Composable
 fun Home(navController: NavHostController, quizViewModel: QuizViewModel, context: Context) {
 
-
+    // Container for the home screen content.
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize().background(Color(0xFF000814))) {
+
+        // Header Text
         Text(
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
             text = "Test Your Knowledge!")
 
-        Spacer(Modifier.padding(10.dp))
+        Spacer(Modifier.padding(10.dp)) // Adds vertical spacing below the header for better readability
+
+    // The list of the quizzes are displayed as cards.
+    // User can start the quiz by clicking on the start button.
 
     Card(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = Color.White)
-
-
         ) {
 
         Row (
@@ -59,9 +62,11 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel, context
                     fontWeight = FontWeight.Bold,
                     text = quizes[0].name)
                 Spacer(modifier = Modifier.height(8.dp))
+                // getHighScore function retrieves the high score from DataStore using the quiz ID
                 Text(text = "High Score: ${getHighScore(context, quizes[0].id)}")
             }
             Button(onClick = {
+                // setQuestions function sets the questions for the quiz in the QuizViewModel so it can be used in the QuizPage screen
                 quizViewModel.setQuestions(jetpackComposeQs)
                 navController.navigate("Quiz_Page/${quizes[0].id}/${quizes[0].name}")
             },
@@ -75,8 +80,8 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel, context
 
     }
 
-
-    Card(
+        // Card for the second quiz (similar to the first card)
+        Card(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth(),
@@ -112,18 +117,26 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel, context
 }
 }
 
+/*
+ * Data class representing a quiz with an ID and name to organize quizzes.
+ *
+ * Suggestion: Consider adding a `questions: List<Question>` property to this class
+ * in the future. This would encapsulate the quiz's associated questions within
+ * the class itself, making it easier to manage and access them.
+ */
 data class Quiz(
     val id: String,
     val name: String
 )
 
+// List of quizzes available in the app
 val quizes = listOf(
     Quiz(id = "1", name = "JetPack Compose"),
     Quiz(id = "2", name = "React Native")
 )
 
 
-
+// The list of questions with their options, correct answers, and explanations for each quiz is defined here.
 val jetpackComposeQs: List<Question> = listOf(
     Question(
         questionText = "What is Jetpack Compose?",

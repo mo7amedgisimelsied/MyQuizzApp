@@ -29,15 +29,17 @@ import androidx.navigation.NavHostController
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
-
+// Define the data store for storing quiz preferences.
 val Context.dataStore by preferencesDataStore(name = "quiz_preferences")
 
+// Define keys for high scores in the data store using the quiz ID as a prefix.
 object PreferencesKeys {
     fun highScoreKey(quizId: String): Preferences.Key<Int> {
         return intPreferencesKey("high_score_$quizId")
     }
 }
 
+// Save the high score for a specific quiz to the data store.
 fun saveHighScore(context: Context, quizId: String, score: Int) {
     runBlocking {
         context.dataStore.edit { preferences ->
@@ -50,7 +52,7 @@ fun saveHighScore(context: Context, quizId: String, score: Int) {
     }
 }
 
-
+// Retrieve the high score for a specific quiz from the data store.
 fun getHighScore(context: Context, quizId: String): Int {
     return runBlocking {
         val highScoreKey = PreferencesKeys.highScoreKey(quizId)
@@ -69,6 +71,7 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
         highScore = currentScore
     }
 
+    // Container for the ScorePage content.
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -78,18 +81,21 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
             .padding(20.dp)
 
     ){
+        // User's current score.
         Text(
             color = Color.White,
             fontSize = 30.sp,
             text = "Your Score: $currentScore"
         )
 
+        // High score for the quiz.
         Text(
             color = Color.White,
             text = "High Score: $highScore")
 
         Spacer(Modifier.padding(10.dp))
 
+        // Button to navigate back to the Home screen.
         Button(onClick = {
             navController.navigate("Home")
         },
@@ -104,6 +110,4 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
 
 
     }
-
-
 }

@@ -16,21 +16,30 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyQuizzAppTheme {
-
+                    /* The app contains three screens:
+                     The Home screen displays a list of quizzes with their names and high scores.
+                     The QuizPage screen allows the user to take a quiz by answering questions.
+                     The ScorePage screen displays the user's score and provides an option to restart the quiz.
+                    */
                     val navController = rememberNavController()
+
+                    // quizViewModel is used to share the quiz questions and answers between Home and QuizPage screens.
                     val quizViewModel: QuizViewModel = viewModel()
 
-
+                    // The app uses a NavHost to navigate between the screens.
                     NavHost(navController = navController, startDestination = "Home") {
+
                         composable("Home") {
                             Home(navController, quizViewModel, applicationContext)
                         }
+
                         composable("Quiz_Page/{quizId}/{quizName}") {
                             backStackEntry ->
                             val quizId = backStackEntry.arguments?.getString("quizId") ?: ""
                             val quizName = backStackEntry.arguments?.getString("quizName") ?: ""
                             QuizPage(navController = navController, quizViewModel = quizViewModel, Quiz(quizId, quizName))
                         }
+
                         composable("Score_Page/{quizId}/{currentScore}") {
                             backStackEntry ->
                             val quizId = backStackEntry.arguments?.getString("quizId") ?: ""
