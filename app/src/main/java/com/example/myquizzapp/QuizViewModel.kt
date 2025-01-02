@@ -10,4 +10,10 @@ class QuizViewModel : ViewModel() {
         questionsList.value = quizQuestions
     }
 
+    fun getQuestions(): List<Question>{
+        return questionsList.value ?: emptyList()
+    }
+
+
+
 }

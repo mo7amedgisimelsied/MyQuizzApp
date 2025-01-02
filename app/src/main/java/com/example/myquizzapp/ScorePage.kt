@@ -61,14 +61,15 @@ fun getHighScore(context: Context, quizId: String): Int {
 }
 
 
-
 @Composable
 fun ScorePage(context: Context, currentScore: Int, navController: NavHostController, quizId: String) {
     var highScore by remember { mutableStateOf(getHighScore(context, quizId)) }
+    var message by remember { mutableStateOf("Your Score: $currentScore") }
 
     if (currentScore > highScore) {
         saveHighScore(context = context, quizId = quizId, score = currentScore)
         highScore = currentScore
+        message = "New High Score: $currentScore"
     }
 
     // Container for the ScorePage content.
@@ -85,7 +86,7 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
         Text(
             color = Color.White,
             fontSize = 30.sp,
-            text = "Your Score: $currentScore"
+            text = message
         )
 
         // High score for the quiz.

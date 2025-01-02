@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -87,23 +88,37 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
     // Container for the QuizPage content.
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceAround,
+        verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF000814))
             .padding(16.dp)
     ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            // Go back to home page
+                Icon(
+                    modifier = Modifier.clickable { navController.navigate("Home") },
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = null,
+                    tint = Color.White
+                )
 
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             // quiz title
             Text(
-                fontSize = 25.sp,
+                fontSize = 20.sp,
                 text = quiz.name,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
+        }
 
-            Spacer(Modifier.padding(7.dp))
+        Spacer(Modifier.padding(7.dp))
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
             // question text
             Text(
