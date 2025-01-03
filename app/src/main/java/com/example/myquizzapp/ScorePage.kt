@@ -69,7 +69,7 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
     if (currentScore > highScore) {
         saveHighScore(context = context, quizId = quizId, score = currentScore)
         highScore = currentScore
-        message = "New High Score: $currentScore"
+        message = "New High Score: $currentScore" // Update the message when a new high score is achieved.
     }
 
     // Container for the ScorePage content.

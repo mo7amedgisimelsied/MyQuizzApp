@@ -5,12 +5,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+// Fills the database with questions once the app is launched.
 fun fillDatabase(context: Context) {
     val database = AppDatabase.getDatabase(context)
     val questionDao = database.questionDao()
 
     CoroutineScope(Dispatchers.IO).launch {
+        // condition to prevent filling the database multiple times
         if (questionDao.getQuestionsByQuizId("1").isEmpty() && questionDao.getQuestionsByQuizId("2").isEmpty()) {
+            // Questions for Jetpack Compose
             val jetpackComposeQs = listOf(
                 Question(
                     quizId = "1",
@@ -113,7 +116,7 @@ fun fillDatabase(context: Context) {
                     explanation = "RecyclerView is not a core Jetpack Compose UI element; it's a legacy View-based component."
                 )
             )
-
+            // Questions for React Native
             val reactNativeQs = listOf(
                 Question(
                     quizId = "2",
@@ -217,6 +220,7 @@ fun fillDatabase(context: Context) {
                 )
             )
 
+            // insert the questions using question dao
             questionDao.insertQuestions(jetpackComposeQs)
             questionDao.insertQuestions(reactNativeQs)
         }

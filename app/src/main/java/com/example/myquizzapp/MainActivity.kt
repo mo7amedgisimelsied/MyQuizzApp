@@ -14,6 +14,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Fills the database with questions once the app is launched.
         fillDatabase(this)
         setContent {
             MyQuizzAppTheme {
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
                     */
                     val navController = rememberNavController()
 
+                    // The QuizViewModel is used to to hold the list of questions.
                     val quizViewModel: QuizViewModel = viewModel()
 
                     // The app uses a NavHost to navigate between the screens.

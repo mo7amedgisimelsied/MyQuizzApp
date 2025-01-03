@@ -35,6 +35,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun Home(navController: NavHostController, quizViewModel: QuizViewModel, context: Context) {
+
     val database = AppDatabase.getDatabase(context)
     val questionDao = database.questionDao()
     val questions by quizViewModel.questionsList.observeAsState(emptyList())
@@ -79,7 +80,7 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel, context
 }
 }
 
-
+// Represents a single quiz card in the home screen.
 @Composable
 fun QuizCard(
     quiz: Quiz,
@@ -90,6 +91,7 @@ fun QuizCard(
     questions: List<Question>
 ) {
 
+    // State to track if the start button is clicked to prevent multiple navigation
     var isStartClicked by remember { mutableStateOf(false) }
 
     Card(
@@ -103,29 +105,35 @@ fun QuizCard(
             modifier = Modifier.fillMaxWidth().padding(20.dp)
         ) {
             Column {
-                Text(fontSize = 20.sp,
+                Text(
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    text = quiz.name)
+                    text = quiz.name
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "High Score: ${getHighScore(context, quiz.id)}")
             }
 
-            Button(onClick = {
+            // Start Button
+            Button(
+                onClick = {
                 isStartClicked = true
                 quizViewModel.fetchQuestions(questionDao, quiz.id)
             },
                 colors = ButtonDefaults.buttonColors(Color(0xFF7b2cbf)),
                 shape = RoundedCornerShape(10.dp)) {
-                Text(color = Color.White, text = "Start")
+                Text(
+                    color = Color.White,
+                    text = "Start"
+                )
             }
         }
     }
 
     // Navigate to QuizPage after questions are fetched
-    LaunchedEffect(isStartClicked,questions) {
+    LaunchedEffect(isStartClicked, questions) {
         if (isStartClicked && questions.isNotEmpty()) {
             navController.navigate("Quiz_Page/${quiz.id}/${quiz.name}")
-            Log.d("Fetch", "questions fetched, quiz id: ${quiz.id}")
             isStartClicked = false
         }
     }

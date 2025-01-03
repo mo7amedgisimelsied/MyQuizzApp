@@ -3,6 +3,7 @@ package com.example.myquizzapp
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// Represents a question entity in the database.
 @Entity(tableName = "questions")
 data class Question(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
@@ -14,4 +15,4 @@ data class Question(
     val option4: String,
     val correctAnswer: Int,
     val explanation: String
-)
+) 

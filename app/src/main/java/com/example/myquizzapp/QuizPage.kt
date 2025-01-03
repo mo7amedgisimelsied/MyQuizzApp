@@ -51,13 +51,12 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
     var showExplanation by remember { mutableStateOf(false) } // The `showExplanation` variable determines whether to show the explanation or not.
     val optionsColors = remember { mutableStateListOf(Color.White, Color.White, Color.White, Color.White)} // The `optionsColors` variable stores the background colors of the options.
     /*
-     * `isAnsweredCorrectly` is a list of booleans that tracks whether each question has been answered correctly.
-     *  By default, all values are `false` and set to `true` when the corresponding question is answered correctly
+     * `isAnswered` is a list of booleans that tracks whether each question has been answered.
+     *  By default, all values are `false` and set to `true` when user submits their answer.
      */
-    var isAnsweredCorreclty = remember { mutableStateListOf(*Array(questions.size) { false }) }
+    var isAnswered = remember { mutableStateListOf(*Array(questions.size) { false }) }
 
-
-
+    // Evaluates user answer and updates the UI accordingly.
     fun checkAnswer(userAnswer: Int) {
         optionsColors.fill(Color.White)
 
@@ -68,11 +67,12 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
 
             // Hide the explanation since the answer is correct.
             showExplanation = false
+
             // Increment the score only if the question has not already been answered correctly.
-            if(!isAnsweredCorreclty[index])
+            if(!isAnswered[index])
             {
                 score++
-                isAnsweredCorreclty[index] = true
+                isAnswered[index] = true
             }
 
         }
@@ -80,10 +80,10 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
         else {
             explain = questions[index].explanation
             showExplanation = true
-            isAnsweredCorreclty[index] = true
+            isAnswered[index] = true // To prevent user from switching their answer after seeing the correct one.
             // Highlight the selected option in red to indicate incorrectness.
-            optionsColors[userAnswer] = Color(0xFFD32F2F)
-            optionsColors[questions[index].correctAnswer] = Color(0xFF00C853)
+            optionsColors[userAnswer] = Color(0xFFD32F2F) // Highlight the selected option in red to indicate incorrectness.
+            optionsColors[questions[index].correctAnswer] = Color(0xFF00C853) // Highlight the correct option in green.
         }
     }
 
@@ -135,6 +135,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
         // Container for option buttons and navigation buttons.
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
+                // Option 1
                 Button(
                     onClick = { checkAnswer(0) },
                     modifier = Modifier.fillMaxWidth(),
@@ -150,6 +151,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
 
             Spacer(modifier = Modifier.height(2.dp)) // Adds vertical space between buttons for better readability.
 
+            // Option 2
             Button(
                 onClick = { checkAnswer(1) },
                 modifier = Modifier.fillMaxWidth(),
@@ -165,6 +167,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
 
             Spacer(modifier = Modifier.height(2.dp)) // Adds vertical space between buttons for better readability.
 
+            // Option 3
             Button(
                 onClick = { checkAnswer(2) },
                 modifier = Modifier.fillMaxWidth(),
@@ -180,6 +183,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
 
             Spacer(modifier = Modifier.height(2.dp)) // Adds vertical space between buttons for better readability.
 
+            // Option 4
             Button(
                 onClick = { checkAnswer(3) },
                 modifier = Modifier.fillMaxWidth(),
