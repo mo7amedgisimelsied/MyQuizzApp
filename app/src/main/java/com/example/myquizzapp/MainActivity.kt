@@ -14,16 +14,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        fillDatabase(this)
         setContent {
             MyQuizzAppTheme {
                     /* The app contains three screens:
                      The Home screen displays a list of quizzes with their names and high scores.
                      The QuizPage screen allows the user to take a quiz by answering questions.
-                     The ScorePage screen displays the user's score and provides an option to restart the quiz.
+                     The ScorePage screen displays the user's score.
                     */
                     val navController = rememberNavController()
 
-                    // quizViewModel is used to share the quiz questions and answers between Home and QuizPage screens.
                     val quizViewModel: QuizViewModel = viewModel()
 
                     // The app uses a NavHost to navigate between the screens.

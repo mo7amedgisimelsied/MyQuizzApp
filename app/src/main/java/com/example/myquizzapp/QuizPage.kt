@@ -47,7 +47,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
     var index by remember { mutableStateOf(0) }
     var score by remember { mutableStateOf(0) } // The `score` variable keeps track of the user's score.
     var explain by remember { mutableStateOf("") } // The `explain` variable stores the explanation for the current question.
-    val questions by quizViewModel.questionsList.observeAsState(emptyList()) // The `questions` variable holds the list of questions from the QuizViewModel.
+    val questions by quizViewModel.questionsList.observeAsState(emptyList())
     var showExplanation by remember { mutableStateOf(false) } // The `showExplanation` variable determines whether to show the explanation or not.
     val optionsColors = remember { mutableStateListOf(Color.White, Color.White, Color.White, Color.White)} // The `optionsColors` variable stores the background colors of the options.
     /*
@@ -80,8 +80,10 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
         else {
             explain = questions[index].explanation
             showExplanation = true
+            isAnsweredCorreclty[index] = true
             // Highlight the selected option in red to indicate incorrectness.
             optionsColors[userAnswer] = Color(0xFFD32F2F)
+            optionsColors[questions[index].correctAnswer] = Color(0xFF00C853)
         }
     }
 
@@ -133,21 +135,62 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
         // Container for option buttons and navigation buttons.
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-            // Loop through the options and create a button for each option.
-            for (i in 0..3) {
                 Button(
-                    onClick = { checkAnswer(i) },
+                    onClick = { checkAnswer(0) },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(optionsColors[i]),
+                    colors = ButtonDefaults.buttonColors(optionsColors[0]),
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
                         color = Color.DarkGray,
                         textAlign = TextAlign.Center,
-                        text = questions[index].options[i]
+                        text = questions[index].option1
                     )
                 }
-                Spacer(modifier = Modifier.height(2.dp)) // Adds vertical space between buttons for better readability.
+
+            Spacer(modifier = Modifier.height(2.dp)) // Adds vertical space between buttons for better readability.
+
+            Button(
+                onClick = { checkAnswer(1) },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(optionsColors[1]),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    color = Color.DarkGray,
+                    textAlign = TextAlign.Center,
+                    text = questions[index].option2
+                )
+            }
+
+            Spacer(modifier = Modifier.height(2.dp)) // Adds vertical space between buttons for better readability.
+
+            Button(
+                onClick = { checkAnswer(2) },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(optionsColors[2]),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    color = Color.DarkGray,
+                    textAlign = TextAlign.Center,
+                    text = questions[index].option3
+                )
+            }
+
+            Spacer(modifier = Modifier.height(2.dp)) // Adds vertical space between buttons for better readability.
+
+            Button(
+                onClick = { checkAnswer(3) },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(optionsColors[3]),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    color = Color.DarkGray,
+                    textAlign = TextAlign.Center,
+                    text = questions[index].option4
+                )
             }
 
             Spacer(Modifier.padding(3.dp)) // Adds vertical space between option buttons and navigation buttons.

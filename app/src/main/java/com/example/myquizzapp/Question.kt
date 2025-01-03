@@ -1,12 +1,17 @@
 package com.example.myquizzapp
 
-import kotlinx.serialization.Serializable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-// Represents a question with its text, options, correct answer, and explanation.
-@Serializable
+@Entity(tableName = "questions")
 data class Question(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val quizId: String,
     val questionText: String,
-    val options: List<String>,
+    val option1: String,
+    val option2: String,
+    val option3: String,
+    val option4: String,
     val correctAnswer: Int,
     val explanation: String
 )
