@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -78,7 +79,7 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF000814))
+            .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)
 
     ){
@@ -100,13 +101,12 @@ fun ScorePage(context: Context, currentScore: Int, navController: NavHostControl
         Button(onClick = {
             navController.navigate("Home")
         },
-            colors = ButtonDefaults.buttonColors(Color(0xFF7b2cbf)),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
             shape = RoundedCornerShape(10.dp)
         ) {
             Text(
                 color = Color.White,
                 text = "Back to Home")
-
         }
 
 

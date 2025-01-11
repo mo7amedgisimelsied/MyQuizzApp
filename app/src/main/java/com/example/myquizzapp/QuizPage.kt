@@ -21,6 +21,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
@@ -34,6 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.myquizzapp.ui.theme.correct_answer
+import com.example.myquizzapp.ui.theme.wrong_answer
 
 
 @Composable
@@ -63,7 +66,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
         // If the user's answer is correct:
         if (userAnswer == questions[index].correctAnswer) {
             // Highlight the selected option in green to indicate correctness.
-            optionsColors[userAnswer] = Color(0xFF00C853)
+            optionsColors[userAnswer] = correct_answer
 
             // Hide the explanation since the answer is correct.
             showExplanation = false
@@ -82,8 +85,8 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
             showExplanation = true
             isAnswered[index] = true // To prevent user from switching their answer after seeing the correct one.
             // Highlight the selected option in red to indicate incorrectness.
-            optionsColors[userAnswer] = Color(0xFFD32F2F) // Highlight the selected option in red to indicate incorrectness.
-            optionsColors[questions[index].correctAnswer] = Color(0xFF00C853) // Highlight the correct option in green.
+            optionsColors[userAnswer] = wrong_answer // Highlight the selected option in red to indicate incorrectness.
+            optionsColors[questions[index].correctAnswer] = correct_answer // Highlight the correct option in green.
         }
     }
 
@@ -93,7 +96,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF000814))
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
         Row(
@@ -257,7 +260,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
                 Text(
                     color = Color.White,
                     modifier = Modifier
-                        .background(Color(0xFFe63946))
+                        .background(MaterialTheme.colorScheme.tertiary)
                         .padding(10.dp),
                     text = explain
                 )

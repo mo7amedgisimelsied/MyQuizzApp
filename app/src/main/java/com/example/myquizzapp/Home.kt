@@ -1,7 +1,6 @@
 package com.example.myquizzapp
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,7 +44,10 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel, context
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize().background(Color(0xFF000814))) {
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
 
         // Header Text
         Text(
@@ -120,7 +123,7 @@ fun QuizCard(
                 isStartClicked = true
                 quizViewModel.fetchQuestions(questionDao, quiz.id)
             },
-                colors = ButtonDefaults.buttonColors(Color(0xFF7b2cbf)),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                 shape = RoundedCornerShape(10.dp)) {
                 Text(
                     color = Color.White,
