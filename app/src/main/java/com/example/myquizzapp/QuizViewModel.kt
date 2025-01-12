@@ -24,7 +24,7 @@ class QuizViewModel : ViewModel() {
     val explain: LiveData<String> = _explain
 
     // LiveData to determine whether to show the explanation or not.
-    private val _showExplanation = MutableLiveData(false)
+    val _showExplanation = MutableLiveData(false)
     val showExplanation: LiveData<Boolean> = _showExplanation
 
     // LiveData to store the background colors of the options.

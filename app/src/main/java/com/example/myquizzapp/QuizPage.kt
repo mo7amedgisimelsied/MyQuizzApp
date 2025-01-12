@@ -198,6 +198,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
                         if (index < questions.size - 1) {
                             index++
                             quizViewModel.resetColors()
+                            quizViewModel._showExplanation.postValue(false)
                         } else {
                             navController.navigate("Score_Page/${quiz.id}/$score")
                         }
