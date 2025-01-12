@@ -1,4 +1,4 @@
-![Artboard 1](https://github.com/user-attachments/assets/157c193a-eb98-4651-a43b-cb9c649cf8ed)
+![my quizz](https://github.com/user-attachments/assets/7a9f376c-d5b0-46c5-96aa-24969b56ef63)
 
 # MyQuizzApp
 
@@ -18,4 +18,4 @@ MyQuizzApp is an Android quiz application I developed as part of my Mobile Softw
 
 ## Installation:
 You can download the APK from the following release:
-[Download APK - v1.0.0](https://github.com/mo7amedgisimelsied/MyQuizzApp/releases/tag/v1.0.0)
+[Download APK - v1.0.0](https://github.com/mo7amedgisimelsied/MyQuizzApp/releases/tag/v1.1.0)
