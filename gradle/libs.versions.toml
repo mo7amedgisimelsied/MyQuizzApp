@@ -2,6 +2,7 @@
 agp = "8.7.3"
 androidxJunit = "1.1.5"
 core = "1.6.1"
+coreTesting = "2.2.0"
 datastorePreferences = "1.1.1"
 gson = "2.10.1"
 kotlin = "2.0.0"
@@ -25,6 +26,7 @@ junitKtx = "1.2.1"
 [libraries]
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-junit-v115 = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }

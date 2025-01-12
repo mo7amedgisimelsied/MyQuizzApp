@@ -24,7 +24,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,8 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.myquizzapp.ui.theme.correct_answer
-import com.example.myquizzapp.ui.theme.wrong_answer
 
 
 @Composable
@@ -48,47 +45,13 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
      * - It is decremented when the user clicks the back arrow.
      */
     var index by remember { mutableStateOf(0) }
-    var score by remember { mutableStateOf(0) } // The `score` variable keeps track of the user's score.
-    var explain by remember { mutableStateOf("") } // The `explain` variable stores the explanation for the current question.
+    val score by quizViewModel.score.observeAsState(0) // The `score` variable keeps track of the user's score.
+    val explain by quizViewModel.explain.observeAsState("") // The `explain` variable stores the explanation for the current question.
     val questions by quizViewModel.questionsList.observeAsState(emptyList())
-    var showExplanation by remember { mutableStateOf(false) } // The `showExplanation` variable determines whether to show the explanation or not.
-    val optionsColors = remember { mutableStateListOf(Color.White, Color.White, Color.White, Color.White)} // The `optionsColors` variable stores the background colors of the options.
-    /*
-     * `isAnswered` is a list of booleans that tracks whether each question has been answered.
-     *  By default, all values are `false` and set to `true` when user submits their answer.
-     */
-    var isAnswered = remember { mutableStateListOf(*Array(questions.size) { false }) }
-
-    // Evaluates user answer and updates the UI accordingly.
-    fun checkAnswer(userAnswer: Int) {
-        optionsColors.fill(Color.White)
-
-        // If the user's answer is correct:
-        if (userAnswer == questions[index].correctAnswer) {
-            // Highlight the selected option in green to indicate correctness.
-            optionsColors[userAnswer] = correct_answer
-
-            // Hide the explanation since the answer is correct.
-            showExplanation = false
-
-            // Increment the score only if the question has not already been answered correctly.
-            if(!isAnswered[index])
-            {
-                score++
-                isAnswered[index] = true
-            }
-
-        }
-        // If the answer is incorrect, display the explanation for the question.
-        else {
-            explain = questions[index].explanation
-            showExplanation = true
-            isAnswered[index] = true // To prevent user from switching their answer after seeing the correct one.
-            // Highlight the selected option in red to indicate incorrectness.
-            optionsColors[userAnswer] = wrong_answer // Highlight the selected option in red to indicate incorrectness.
-            optionsColors[questions[index].correctAnswer] = correct_answer // Highlight the correct option in green.
-        }
-    }
+    val showExplanation by quizViewModel.showExplanation.observeAsState(false) // The `showExplanation` variable determines whether to show the explanation or not.
+    val optionsColors by quizViewModel.optionsColors.observeAsState(
+        listOf(Color.White, Color.White, Color.White, Color.White)
+    ) // The `optionsColors` variable stores the background colors of the options.
 
     // Container for the QuizPage content.
     Column(
@@ -140,7 +103,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
 
                 // Option 1
                 Button(
-                    onClick = { checkAnswer(0) },
+                    onClick = { quizViewModel.checkAnswer(0, index) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(optionsColors[0]),
                     shape = RoundedCornerShape(10.dp)
@@ -156,7 +119,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
 
             // Option 2
             Button(
-                onClick = { checkAnswer(1) },
+                onClick = { quizViewModel.checkAnswer(1, index) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(optionsColors[1]),
                 shape = RoundedCornerShape(10.dp)
@@ -172,7 +135,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
 
             // Option 3
             Button(
-                onClick = { checkAnswer(2) },
+                onClick = { quizViewModel.checkAnswer(2, index) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(optionsColors[2]),
                 shape = RoundedCornerShape(10.dp)
@@ -188,7 +151,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
 
             // Option 4
             Button(
-                onClick = { checkAnswer(3) },
+                onClick = { quizViewModel.checkAnswer(3, index) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(optionsColors[3]),
                 shape = RoundedCornerShape(10.dp)
@@ -211,7 +174,7 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
                     onClick = {
                         if (index > 0) {
                             index--
-                            optionsColors.fill(Color.White)
+                            quizViewModel.resetColors()
                         }
                     },
                     modifier = Modifier
@@ -233,8 +196,8 @@ fun QuizPage(navController: NavHostController, quizViewModel: QuizViewModel, qui
                 Button(
                     onClick = {
                         if (index < questions.size - 1) {
-                            index++; showExplanation = false
-                            optionsColors.fill(Color.White)
+                            index++
+                            quizViewModel.resetColors()
                         } else {
                             navController.navigate("Score_Page/${quiz.id}/$score")
                         }

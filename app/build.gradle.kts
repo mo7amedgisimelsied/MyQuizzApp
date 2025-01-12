@@ -92,4 +92,5 @@ dependencies {
     testImplementation (libs.androidx.room.testing)
     testImplementation (libs.kotlinx.coroutines.test)
 
+    testImplementation (libs.androidx.core.testing)
 }
