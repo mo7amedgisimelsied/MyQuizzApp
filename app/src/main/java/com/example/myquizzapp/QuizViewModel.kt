@@ -16,7 +16,7 @@ class QuizViewModel : ViewModel() {
     val questionsList = MutableLiveData<List<Question>>()
 
     // LiveData that keeps track of the user's score.
-    private val _score = MutableLiveData(0)
+    val _score = MutableLiveData(0)
     val score: LiveData<Int> = _score
 
     // LiveData to store the explanation for the current question.
@@ -82,5 +82,12 @@ class QuizViewModel : ViewModel() {
         _optionsColors.postValue(
             mutableListOf(Color.White, Color.White, Color.White, Color.White)
         )
+    }
+
+    fun clearViewModel(){
+        _score.postValue(0)
+        _explain.postValue("")
+        _showExplanation.postValue(false)
+        _optionsColors.postValue(mutableListOf(Color.White, Color.White, Color.White, Color.White))
     }
 }

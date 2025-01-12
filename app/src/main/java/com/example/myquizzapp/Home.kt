@@ -39,7 +39,7 @@ fun Home(navController: NavHostController, quizViewModel: QuizViewModel, context
     val database = AppDatabase.getDatabase(context)
     val questionDao = database.questionDao()
     val questions by quizViewModel.questionsList.observeAsState(emptyList())
-
+    quizViewModel.clearViewModel() // Reset the ViewModel to its initial state.
     // Container for the home screen content.
     Column(
         verticalArrangement = Arrangement.Center,
