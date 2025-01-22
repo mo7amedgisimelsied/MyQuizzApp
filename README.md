@@ -18,4 +18,4 @@ MyQuizzApp is an Android quiz application I developed as part of my Mobile Softw
 
 ## Installation:
 You can download the APK from the following release:
-[Download APK - v1.0.0](https://github.com/mo7amedgisimelsied/MyQuizzApp/releases/tag/v1.1.0)
+[Download APK - v1.1.0](https://github.com/mo7amedgisimelsied/MyQuizzApp/releases/tag/v1.1.0)
